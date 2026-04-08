@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Анель 🎬</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; background: #0f0f0f; }
+    .page {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2.5rem 1.5rem; text-align: center;
+      position: relative; overflow: hidden;
+      background: #0f0f0f;
+    }
+    .stars { position: absolute; top:0;left:0;right:0;bottom:0; pointer-events:none; }
+    .star {
+      position: absolute; width:3px; height:3px;
+      background: #e05c7a; border-radius:50%; opacity:0.25;
+      animation: twinkle var(--d,2s) ease-in-out infinite;
+      animation-delay: var(--del,0s);
+    }
+    @keyframes twinkle { 0%,100%{opacity:0.1} 50%{opacity:0.6} }
+    .photo-wrap {
+      width:120px; height:120px; border-radius:50%;
+      overflow:hidden; border:3px solid #e05c7a;
+      margin-bottom:1.2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    .photo-wrap img { width:100%; height:100%; object-fit:cover; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .name { font-size:32px; font-weight:500; color:#e05c7a; margin-bottom:0.3rem; letter-spacing:1px; }
+    .love-line { font-size:15px; color:#aaa; margin-bottom:1.4rem; font-style:italic; }
+    .icon-row { font-size:24px; letter-spacing:8px; margin-bottom:1.2rem; animation:pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+    .title { font-size:22px; font-weight:500; color:#fff; margin-bottom:0.5rem; line-height:1.3; }
+    .subtitle { font-size:14px; color:#aaa; margin-bottom:1.6rem; line-height:1.7; max-width:320px; }
+    .ticket {
+      background:#1a1a1a; border:1px solid #333;
+      border-radius:12px; padding:0.9rem 1.4rem; margin-bottom:1.8rem;
+      display:flex; align-items:center; gap:1rem;
+      max-width:300px; width:100%;
+    }
+    .ticket-icon { font-size:30px; flex-shrink:0; }
+    .ticket-info { text-align:left; }
+    .ticket-title { font-size:14px; font-weight:500; color:#fff; }
+    .ticket-detail { font-size:13px; color:#aaa; margin-top:3px; }
+    .date-badge {
+      display:inline-block; background:#e05c7a; color:#fff;
+      font-size:13px; font-weight:500; padding:0.35rem 1rem;
+      border-radius:20px; margin-bottom:1.8rem; letter-spacing:0.5px;
+    }
+    .btn-area { position:relative; width:100%; height:80px; display:flex; align-items:center; justify-content:center; }
+    .btn-yes {
+      font-size:15px; font-weight:500;
+      border:none; border-radius:12px;
+      background:#e05c7a; color:#fff; cursor:pointer;
+      padding: 0.75rem 2rem;
+      transition: padding 0.3s, font-size 0.3s, background 0.2s;
+      z-index:2;
+    }
+    .btn-yes:hover { background:#c44d6a; }
+    .btn-no {
+      font-size:15px; font-weight:500;
+      border:2px solid #444; border-radius:12px;
+      background:transparent; color:#aaa;
+      cursor:pointer; position:absolute;
+      padding: 0.75rem 2rem;
+      z-index:2;
+    }
+    .msg-yes {
+      display:none; font-size:20px; font-weight:500;
+      color:#e05c7a; margin-top:1.5rem;
+      animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes popIn { 0%{transform:scale(0.5);opacity:0} 100%{transform:scale(1);opacity:1} }
+  </style>
+</head>
+<body>
+<div class="page" id="page">
+  <div class="stars" id="sc"></div>
+  <div class="photo-wrap">
+    <img src="https://storage.nachas.ru/images/imperavi/ba/5da451af99757.jpg" alt="Анель">
+  </div>
+  <div class="name">Нұрдаулет</div>
+  <div class="love-line">Человек паук ♥</div>
+  <div class="icon-row">🎬 🍿 🎟</div>
+  <div class="title">Сенімен киноға бармақшымын</div>
+  <div class="subtitle">Жақсы фильм, жылы орын және екеуміз — басқа не керек?</div>
+  <div class="date-badge">📅 18 мамыр · 18:00</div>
+  <div class="ticket">
+    <div class="ticket-icon">🎫</div>
+    <div class="ticket-info">
+      <div class="ticket-title">Кино кешкісі</div>
+      <div class="ticket-detail">2 орын · Баханди комбо · Тек екеуміз 🙂</div>
+    </div>
+  </div>
+  <div class="btn-area" id="btnArea">
+    <button class="btn-yes" id="yesBtn" onclick="sayYes()">Иә, барамын! 🎉</button>
+    <button class="btn-no" id="noBtn">Жоқ</button>
+  </div>
+  <div class="msg-yes" id="yesMsg">🎬 Керемет, Нұрдаулет! Сол рас болса бір темекі шегіп келейік! 🍿♥</div>
+</div>
+
+<script>
+  const sc = document.getElementById('sc');
+  for (let i = 0; i < 35; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*2.5}s;--del:${Math.random()*2}s`;
+    sc.appendChild(s);
+  }
+
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const page = document.getElementById('page');
+  let yesPadding = 12;
+  let yesFontSize = 15;
+
+  noBtn.style.left = '60%';
+  noBtn.style.top = '20px';
+
+  function runAway() {
+    const pr = page.getBoundingClientRect();
+    const nr = noBtn.getBoundingClientRect();
+    const maxX = pr.width - nr.width - 10;
+    const maxY = pr.height - nr.height - 10;
+    noBtn.style.left = Math.max(5, Math.random() * maxX) + 'px';
+    noBtn.style.top = Math.max(5, Math.random() * maxY) + 'px';
+    yesPadding = Math.min(yesPadding + 4, 40);
+    yesFontSize = Math.min(yesFontSize + 2, 28);
+    yesBtn.style.padding = `${yesPadding/16}rem ${yesPadding*1.8/16}rem`;
+    yesBtn.style.fontSize = yesFontSize + 'px';
+  }
+
+  noBtn.addEventListener('click', runAway);
+  noBtn.addEventListener('mouseover', runAway);
+  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runAway(); });
+
+  function sayYes() {
+    document.getElementById('btnArea').style.display = 'none';
+    document.getElementById('yesMsg').style.display = 'block';
+  }
+</script>
+</body>
+</html>
